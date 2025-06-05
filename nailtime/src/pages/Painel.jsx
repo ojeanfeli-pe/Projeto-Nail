@@ -5,14 +5,17 @@ export default function Painel() {
   const [erro, setErro] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5215/api/agendamentos")
-      .then(response => {
-        if (!response.ok) throw new Error("Erro ao buscar agendamentos");
-        return response.json();
-      })
-      .then(data => setAgendamentos(data))
-      .catch(error => setErro(error.message));
-  }, []);
+  fetch("http://localhost:5215/api/agendamentos")
+    .then(response => {
+      if (!response.ok) throw new Error("Erro ao buscar agendamentos");
+      return response.json();
+    })
+    .then(data => {
+      console.log("🚀 Agendamentos recebidos:", data); // 👈 aqui
+      setAgendamentos(data);
+    })
+    .catch(error => setErro(error.message));
+}, []);
 
   return (
     <div className="p-6">
@@ -33,17 +36,18 @@ export default function Painel() {
             </tr>
           </thead>
           <tbody>
-            {agendamentos.map((ag, index) => (
-              <tr key={index} className="border-t">
-                <td className="p-2">{ag.nomeCliente}</td>
-                <td className="p-2">{ag.procedimento}</td>
-                <td className="p-2">
-                  {new Date(ag.dataHora).toLocaleString("pt-BR")}
-                </td>
-                <td className="p-2">{ag.pagamento}</td>
-              </tr>
-            ))}
-          </tbody>
+  {agendamentos.map((ag, index) => (
+    <tr key={index} className="border-t">
+      <td className="p-2">{ag.nome}</td>
+      <td className="p-2">{ag.servico}</td>
+      <td className="p-2">
+        {new Date(`${ag.data}T${ag.horario}`).toLocaleString("pt-BR")}
+      </td>
+      <td className="p-2">{ag.pagamento}</td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       )}
     </div>
