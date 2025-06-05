@@ -15,12 +15,36 @@ function Agendamento() {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Dados do agendamento:", form);
-    alert("Agendamento enviado! ✅");
-    // Aqui futuramente enviaremos ao back-end
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://localhost:5215/api/agendamentos", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(form)
+});
+
+    if (response.ok) {
+      alert("Agendamento enviado com sucesso! ✅");
+      setForm({
+        servico: "",
+        data: "",
+        horario: "",
+        nome: "",
+        telefone: "",
+        pagamento: "",
+      });
+    } else {
+      alert("Erro ao enviar o agendamento.");
+    }
+  } catch (error) {
+    console.error("Erro ao conectar com a API:", error);
+    alert("Erro na conexão com o servidor.");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
