@@ -163,6 +163,7 @@ function Agendamento() {
               value={form.telefone}
               onChange={handleChange}
               className="w-full p-2 border rounded"
+              placeholder="(99) 99999-9999"
             />
           </div>
 
