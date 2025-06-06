@@ -1,0 +1,6 @@
+@NailTime.Api_HostAddress = http://localhost:5215
+
+GET {{NailTime.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
