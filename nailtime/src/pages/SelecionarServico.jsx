@@ -14,6 +14,10 @@ const servicos = [
 export default function SelecionarServico() {
   const navigate = useNavigate();
 
+  const selecionar = (servico) => {
+    navigate("/escolher-horario", { state: { servico } });
+  };
+  
   return (
     <div className="bg-white min-h-screen p-4">
       {/* Cabeçalho com botão de sair */}
@@ -32,7 +36,8 @@ export default function SelecionarServico() {
         {servicos.map((servico, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-lg p-4 flex justify-between items-center shadow-sm hover:shadow-md transition"
+            className="border border-gray-200 rounded-lg p-4 flex justify-between items-center shadow-sm hover:shadow-md transition cursor-pointer"
+            onClick={() => selecionar(servico)} // <- clique aqui chama a função
           >
             <div>
               <h3 className="font-medium text-gray-800">{servico.nome}</h3>

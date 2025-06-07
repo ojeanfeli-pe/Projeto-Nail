@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import DatePicker, { registerLocale } from "react-datepicker";
 import ptBR from "date-fns/locale/pt-BR";
 import "react-datepicker/dist/react-datepicker.css";
 
 registerLocale("pt-BR", ptBR);
 
-function Agendamento() {
+export default function FormularioFinal() {
+  const location = useLocation();
+
   const [form, setForm] = useState({
     servico: "",
     data: null,
@@ -17,45 +20,21 @@ function Agendamento() {
 
   const [horariosDisponiveis, setHorariosDisponiveis] = useState([]);
 
+  useEffect(() => {
+    if (location.state) {
+      setForm((prev) => ({
+        ...prev,
+        servico: location.state.servico?.nome || "",
+        data: location.state.data ? new Date(location.state.data) : null,
+        horario: location.state.horario || "",
+      }));
+    }
+  }, [location]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
-
-  function gerarHorariosPorDia(diaDaSemana) {
-    const horarios = [];
-    const horaFinal = diaDaSemana === 6 ? 12 : 16.5;
-
-    for (let h = 8; h < horaFinal; h++) {
-      horarios.push(`${String(h).padStart(2, "0")}:00`);
-      horarios.push(`${String(h).padStart(2, "0")}:30`);
-    }
-
-    return horarios;
-  }
-
-  useEffect(() => {
-    if (!form.data) return;
-
-    const dia = new Date(form.data).getDay();
-    const todosHorarios = gerarHorariosPorDia(dia);
-
-    const buscarHorarios = async () => {
-      try {
-        const dataFormatada = form.data.toISOString().split("T")[0];
-        const res = await fetch(`http://localhost:5215/api/agendamentos?data=${dataFormatada}`);
-        const agendamentos = await res.json();
-        const ocupados = agendamentos.map(a => a.horario);
-        const disponiveis = todosHorarios.filter(h => !ocupados.includes(h));
-        setHorariosDisponiveis(disponiveis);
-      } catch (err) {
-        console.error("Erro ao buscar horários:", err);
-        setHorariosDisponiveis(todosHorarios);
-      }
-    };
-
-    buscarHorarios();
-  }, [form.data]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,12 +43,12 @@ function Agendamento() {
       const response = await fetch("http://localhost:5215/api/agendamentos", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...form,
-          data: form.data ? form.data.toISOString().split("T")[0] : ""
-        })
+          data: form.data ? form.data.toISOString().split("T")[0] : "",
+        }),
       });
 
       if (response.ok) {
@@ -98,53 +77,44 @@ function Agendamento() {
         <h2 className="text-2xl font-bold text-pink-600 mb-4">Agende seu horário 💅</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* Serviço */}
           <div>
             <label className="block font-medium">Procedimento:</label>
-            <select
+            <input
+              type="text"
               name="servico"
               value={form.servico}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            >
-              <option value="">Selecione</option>
-              <option>Unha em gel</option>
-              <option>Manicure e Pedicure</option>
-              <option>Spa dos Pés</option>
-            </select>
+              disabled
+              className="w-full p-2 border rounded bg-gray-100"
+            />
           </div>
 
+          {/* Data */}
           <div>
             <label className="block font-medium">Data:</label>
             <DatePicker
               selected={form.data}
               onChange={(date) => setForm({ ...form, data: date })}
-              filterDate={(date) => {
-                const dia = date.getDay();
-                return dia >= 2 && dia <= 6;
-              }}
-              className="w-full p-2 border rounded"
-              placeholderText="Selecione a data"
               locale="pt-BR"
               dateFormat="dd/MM/yyyy"
+              className="w-full p-2 border rounded"
+              placeholderText="Selecione a data"
             />
           </div>
 
+          {/* Horário */}
           <div>
             <label className="block font-medium">Horário:</label>
-            <select
+            <input
+              type="text"
               name="horario"
               value={form.horario}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              disabled={!form.data}
-            >
-              <option value="">Selecione o horário</option>
-              {horariosDisponiveis.map((h, i) => (
-                <option key={i} value={h}>{h}</option>
-              ))}
-            </select>
+              disabled
+              className="w-full p-2 border rounded bg-gray-100"
+            />
           </div>
 
+          {/* Nome */}
           <div>
             <label className="block font-medium">Seu nome:</label>
             <input
@@ -156,6 +126,7 @@ function Agendamento() {
             />
           </div>
 
+          {/* Telefone */}
           <div>
             <label className="block font-medium">Telefone (WhatsApp):</label>
             <input
@@ -168,6 +139,7 @@ function Agendamento() {
             />
           </div>
 
+          {/* Pagamento */}
           <div>
             <label className="block font-medium">Forma de pagamento:</label>
             <select
@@ -193,6 +165,4 @@ function Agendamento() {
       </div>
     </div>
   );
-}
-
-export default Agendamento;
+} 
