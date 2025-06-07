@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NailTime.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96350964bd22969a3b18cd58902666a0d6ccf5c7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+00751e8860358fd61f941a5746797aadd714c90f")]
 [assembly: System.Reflection.AssemblyProductAttribute("NailTime.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NailTime.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

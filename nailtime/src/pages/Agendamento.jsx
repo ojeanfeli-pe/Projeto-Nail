@@ -78,8 +78,9 @@ function Agendamento() {
           pagamento: "",
         });
       } else {
-        alert("Erro ao enviar o agendamento.");
-      }
+          const msg = await response.text();
+          alert("Erro ao agendar: " + msg); // mostra mensagem do backend
+        }
     } catch (error) {
       console.error("Erro ao conectar com a API:", error);
       alert("Erro na conexão com o servidor.");

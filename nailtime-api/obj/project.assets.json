@@ -3693,11 +3693,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projeto-Nail\\nailtime-api\\NailTime.Api\\NailTime.Api.csproj",
+      "projectUniqueName": "C:\\Projeto-Nail\\nailtime-api\\NailTime.Api.csproj",
       "projectName": "NailTime.Api",
-      "projectPath": "C:\\Projeto-Nail\\nailtime-api\\NailTime.Api\\NailTime.Api.csproj",
+      "projectPath": "C:\\Projeto-Nail\\nailtime-api\\NailTime.Api.csproj",
       "packagesPath": "C:\\Users\\jeanf\\.nuget\\packages\\",
-      "outputPath": "C:\\Projeto-Nail\\nailtime-api\\NailTime.Api\\obj\\",
+      "outputPath": "C:\\Projeto-Nail\\nailtime-api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\jeanf\\AppData\\Roaming\\NuGet\\NuGet.Config"

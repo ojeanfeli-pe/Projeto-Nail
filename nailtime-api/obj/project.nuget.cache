@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "90NBPBYjd7M=",
+  "dgSpecHash": "KMgj6r7thFs=",
   "success": true,
-  "projectFilePath": "C:\\Projeto-Nail\\nailtime-api\\NailTime.Api\\NailTime.Api.csproj",
+  "projectFilePath": "C:\\Projeto-Nail\\nailtime-api\\NailTime.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jeanf\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\jeanf\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.13\\microsoft.aspnetcore.openapi.8.0.13.nupkg.sha512",
