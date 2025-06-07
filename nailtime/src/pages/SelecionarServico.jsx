@@ -1,21 +1,25 @@
 import { useNavigate } from "react-router-dom";
 
 const servicos = [
-  { nome: "Design de sobrancelhas com tintura", duracao: "1h", preco: 65 },
-  { nome: "Depilação buço com fio ou cera", duracao: "10min", preco: 20 },
-  { nome: "Micropigmentação de sobrancelhas", duracao: "1h30min", preco: 450 },
-  { nome: "Limpeza de pele", duracao: "—", preco: 170 },
-  { nome: "Brow Lamination", duracao: "—", preco: 120 },
-  { nome: "Depilação costas", duracao: "—", preco: 40 },
-  { nome: "Escova Progressiva", duracao: "—", preco: "a partir de R$200" },
-  { nome: "Design de sobrancelhas", duracao: "30min", preco: 38 },
+  { nome: "Design", duracao: "-", preco: 30 },
+  { nome: "Henna", duracao: "-", preco: 50 },
+  { nome: "Cílios", duracao: "-", preco: 100 },
+  { nome: "Alongamento de fibra", duracao: "—", preco: 200 },
+  { nome: "Banho em gel", duracao: "—", preco: 80 },
+  { nome: "Esmaltação em gel", duracao: "—", preco: 80 },
+  { nome: "Esmaltação em gel (pé)", duracao: "—", preco: 80 },
+  { nome: "Esmaltação simples", duracao: "—", preco: 80 },
+  { nome: "Pedicure simples", duracao: "—", preco: 35 },
+  { nome: "Remoção de alongamento", duracao: "—", preco: 30 },
+  { nome: "Remoção de esmalte gel", duracao: "—", preco: 15 },
+  { nome: "Reposição de unha", duracao: "-", preco: 15 },
 ];
 
 export default function SelecionarServico() {
   const navigate = useNavigate();
 
   const selecionar = (servico) => {
-    navigate("/escolher-horario", { state: { servico } });
+    navigate("/adicionar-servicos", { state: { servico } });
   };
   
   return (

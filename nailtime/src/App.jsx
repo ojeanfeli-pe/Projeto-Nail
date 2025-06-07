@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdicionarServicos from "./pages/AdicionarServicos";
 import Home from "./pages/Home";
 import SelecionarServico from "./pages/SelecionarServico";
 import EscolherHorario from "./pages/EscolherHorario";
@@ -14,6 +15,7 @@ function App() {
 
         {/* Etapas do agendamento */}
         <Route path="/agendar" element={<SelecionarServico />} />
+        <Route path="/adicionar-servicos" element={<AdicionarServicos />} />
         <Route path="/escolher-horario" element={<EscolherHorario />} />
         <Route path="/agendamento" element={<FormularioFinal />} />
 

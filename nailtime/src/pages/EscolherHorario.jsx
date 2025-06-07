@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function EscolherHorario() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { servico } = location.state || {};
+  const { servico, adicionais = [] } = location.state || {};
   const [dataSelecionada, setDataSelecionada] = useState("");
   const [horariosDisponiveis, setHorariosDisponiveis] = useState([]);
   const [horariosPreenchidos, setHorariosPreenchidos] = useState([]);
@@ -43,7 +43,16 @@ export default function EscolherHorario() {
   return (
     <div className="p-6 bg-white min-h-screen">
       <h2 className="text-2xl font-bold mb-4 text-pink-600">Escolher Horário</h2>
-      <p className="mb-4 text-gray-700">{servico?.nome}</p>
+
+      <div className="mb-4">
+        <p className="font-semibold text-gray-700">Você escolheu:</p>
+        <ul className="list-disc list-inside text-gray-600">
+          <li>{servico?.nome}</li>
+          {adicionais.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+      </div>
 
       <label className="block mb-2 font-medium text-gray-800">Escolha a data:</label>
       <input
@@ -65,6 +74,7 @@ export default function EscolherHorario() {
               navigate("/agendamento", {
                 state: {
                   servico,
+                  adicionais,
                   data: dataSelecionada,
                   horario: hora
                 }
