@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
+import ptBR from "date-fns/locale/pt-BR";
 import "react-datepicker/dist/react-datepicker.css";
+
+registerLocale("pt-BR", ptBR);
 
 function Agendamento() {
   const [form, setForm] = useState({
     servico: "",
-    data: "",
+    data: null,
     horario: "",
     nome: "",
     telefone: "",
@@ -19,10 +22,9 @@ function Agendamento() {
     setForm({ ...form, [name]: value });
   };
 
-  // Gera os horários possíveis de acordo com o dia da semana
   function gerarHorariosPorDia(diaDaSemana) {
     const horarios = [];
-    const horaFinal = diaDaSemana === 6 ? 12 : 16.5; // sábado até 12h, demais até 16:30
+    const horaFinal = diaDaSemana === 6 ? 12 : 16.5;
 
     for (let h = 8; h < horaFinal; h++) {
       horarios.push(`${String(h).padStart(2, "0")}:00`);
@@ -32,7 +34,6 @@ function Agendamento() {
     return horarios;
   }
 
-  // Quando selecionar a data, carrega horários disponíveis
   useEffect(() => {
     if (!form.data) return;
 
@@ -41,14 +42,15 @@ function Agendamento() {
 
     const buscarHorarios = async () => {
       try {
-        const res = await fetch(`http://localhost:5215/api/agendamentos?data=${form.data}`);
+        const dataFormatada = form.data.toISOString().split("T")[0];
+        const res = await fetch(`http://localhost:5215/api/agendamentos?data=${dataFormatada}`);
         const agendamentos = await res.json();
         const ocupados = agendamentos.map(a => a.horario);
         const disponiveis = todosHorarios.filter(h => !ocupados.includes(h));
         setHorariosDisponiveis(disponiveis);
       } catch (err) {
         console.error("Erro ao buscar horários:", err);
-        setHorariosDisponiveis(todosHorarios); // fallback
+        setHorariosDisponiveis(todosHorarios);
       }
     };
 
@@ -64,23 +66,26 @@ function Agendamento() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify({
+          ...form,
+          data: form.data ? form.data.toISOString().split("T")[0] : ""
+        })
       });
 
       if (response.ok) {
         alert("Agendamento enviado com sucesso! ✅");
         setForm({
           servico: "",
-          data: "",
+          data: null,
           horario: "",
           nome: "",
           telefone: "",
           pagamento: "",
         });
       } else {
-          const msg = await response.text();
-          alert("Erro ao agendar: " + msg); // mostra mensagem do backend
-        }
+        const msg = await response.text();
+        alert("Erro ao agendar: " + msg);
+      }
     } catch (error) {
       console.error("Erro ao conectar com a API:", error);
       alert("Erro na conexão com o servidor.");
@@ -93,7 +98,6 @@ function Agendamento() {
         <h2 className="text-2xl font-bold text-pink-600 mb-4">Agende seu horário 💅</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Procedimento */}
           <div>
             <label className="block font-medium">Procedimento:</label>
             <select
@@ -109,24 +113,22 @@ function Agendamento() {
             </select>
           </div>
 
-          {/* Data */}
           <div>
             <label className="block font-medium">Data:</label>
             <DatePicker
-              selected={form.data ? new Date(form.data) : null}
-              onChange={(date) =>
-                setForm({ ...form, data: date.toISOString().split("T")[0] })
-              }
+              selected={form.data}
+              onChange={(date) => setForm({ ...form, data: date })}
               filterDate={(date) => {
-                const dia = date.getDay(); // 0 = domingo, 1 = segunda
-                return dia >= 2 && dia <= 6; // terça a sábado
+                const dia = date.getDay();
+                return dia >= 2 && dia <= 6;
               }}
               className="w-full p-2 border rounded"
               placeholderText="Selecione a data"
+              locale="pt-BR"
+              dateFormat="dd/MM/yyyy"
             />
           </div>
 
-          {/* Horário */}
           <div>
             <label className="block font-medium">Horário:</label>
             <select
@@ -143,7 +145,6 @@ function Agendamento() {
             </select>
           </div>
 
-          {/* Nome */}
           <div>
             <label className="block font-medium">Seu nome:</label>
             <input
@@ -155,7 +156,6 @@ function Agendamento() {
             />
           </div>
 
-          {/* Telefone */}
           <div>
             <label className="block font-medium">Telefone (WhatsApp):</label>
             <input
@@ -168,7 +168,6 @@ function Agendamento() {
             />
           </div>
 
-          {/* Pagamento */}
           <div>
             <label className="block font-medium">Forma de pagamento:</label>
             <select
