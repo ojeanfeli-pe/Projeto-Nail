@@ -1,14 +1,19 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const todosServicos = [
-  { nome: "Design de sobrancelhas com tintura", preco: 65 },
-  { nome: "Depilação buço com fio ou cera", preco: 20 },
-  { nome: "Micropigmentação de sobrancelhas", preco: 450 },
-  { nome: "Limpeza de pele", preco: 170 },
-  { nome: "Brow Lamination", preco: 120 },
-  { nome: "Depilação costas", preco: 40 },
-  { nome: "Escova Progressiva", preco: "a partir de R$200" },
+  { nome: "Design", duracao: "-", preco: 30 },
+  { nome: "Henna", duracao: "-", preco: 50 },
+  { nome: "Cílios", duracao: "-", preco: 100 },
+  { nome: "Alongamento de fibra", duracao: "—", preco: 200 },
+  { nome: "Banho em gel", duracao: "—", preco: 80 },
+  { nome: "Esmaltação em gel", duracao: "—", preco: 80 },
+  { nome: "Esmaltação em gel (pé)", duracao: "—", preco: 80 },
+  { nome: "Esmaltação simples", duracao: "—", preco: 80 },
+  { nome: "Pedicure simples", duracao: "—", preco: 35 },
+  { nome: "Remoção de alongamento", duracao: "—", preco: 30 },
+  { nome: "Remoção de esmalte gel", duracao: "—", preco: 15 },
+  { nome: "Reposição de unha", duracao: "-", preco: 15 },
 ];
 
 export default function AdicionarServicos() {
@@ -32,10 +37,15 @@ export default function AdicionarServicos() {
   };
 
   const irParaEscolherHorario = () => {
+    // transformar os nomes selecionados em objetos completos
+    const adicionaisCompletos = todosServicos.filter((servico) =>
+      adicionais.includes(servico.nome)
+    );
+
     navigate("/escolher-horario", {
       state: {
         servico: servicoPrincipal,
-        adicionais,
+        adicionais: adicionaisCompletos,
       },
     });
   };
