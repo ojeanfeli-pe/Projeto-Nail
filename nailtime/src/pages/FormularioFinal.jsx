@@ -120,7 +120,7 @@ export default function FormularioFinal() {
             <input
               type="text"
               name="nome"
-              value={form.nome}
+              value={form.nome} required
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
@@ -132,10 +132,10 @@ export default function FormularioFinal() {
             <input
               type="tel"
               name="telefone"
-              value={form.telefone}
+              value={form.telefone} required
               onChange={handleChange}
               className="w-full p-2 border rounded"
-              placeholder="(99) 99999-9999"
+              placeholder="(41) 99999-9999" 
             />
           </div>
 
@@ -144,7 +144,7 @@ export default function FormularioFinal() {
             <label className="block font-medium">Forma de pagamento:</label>
             <select
               name="pagamento"
-              value={form.pagamento}
+              value={form.pagamento} required
               onChange={handleChange}
               className="w-full p-2 border rounded"
             >

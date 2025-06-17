@@ -85,6 +85,27 @@ app.MapDelete("/api/agendamentos/{id}", async (int id, AppDbContext db) =>
     return Results.Ok();
 });
 
+// Endpoint para criar nova ficha de anamnese
+app.MapPost("/api/anamnese", async (Anamnese anamnese, AppDbContext db) =>
+{
+    anamnese.DataPreenchimento = DateTime.Now;
+    db.Anamneses.Add(anamnese);
+    await db.SaveChangesAsync();
+    return Results.Ok(anamnese);
+});
+
+// Endpoint para buscar fichas de um cliente pelo nome
+app.MapGet("/api/anamnese/{clienteNome}", async (string clienteNome, AppDbContext db) =>
+{
+    var fichas = await db.Anamneses
+        .Where(a => a.NomeCliente.ToLower() == clienteNome.ToLower())
+        .ToListAsync();
+
+    if (fichas.Count == 0)
+        return Results.NotFound("Nenhuma ficha encontrada para este cliente.");
+
+    return Results.Ok(fichas);
+});
 
 app.UseCors("AllowAll");
 
